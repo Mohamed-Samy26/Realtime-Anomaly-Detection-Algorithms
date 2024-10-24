@@ -1,9 +1,10 @@
+from typing import Tuple
 import numpy as np
 import random
 import time
 
 class RealTimeDataStream:
-    def __init__(self, anomaly_prob=0.01, noise_level=0.05):
+    def __init__(self, anomaly_prob:float=0.01, noise_level:float=0.05):
         """
         Initialize the real-time data stream with configurable anomaly probability and noise level.
         
@@ -15,7 +16,7 @@ class RealTimeDataStream:
         self.noise_level = noise_level
         self.time_index = 0  # Tracks the progression of time in the stream
 
-    def generate_data_point(self):
+    def generate_data_point(self) -> float:
         """
         Generate the next data point in the stream based on a regular pattern, seasonality, and random noise.
         Anomalies may also be introduced.
@@ -43,10 +44,17 @@ class RealTimeDataStream:
         
         return data_point
 
-    def generate_data_point_tuple(self):
-        return (self.generate_data_point(), self.time_index)
+    def generate_data_point_tuple(self)-> Tuple[float, float]:
+        """
+        Generate the next data point with time index in the stream based on a regular pattern, seasonality, and random noise.
+        Anomalies may also be introduced.
+        
+        Returns:
+        - data_point: The next data point tuple (value, time_index) in the stream.
+        """
+        return (self.generate_data_point(), float(self.time_index))
 
-    def run(self, interval=1, points=10):
+    def run(self, interval:float=1, points:int=10)-> None:
         """
         Run the data stream for a given number of points, yielding data in real time.
         
@@ -61,14 +69,3 @@ class RealTimeDataStream:
             data_point = self.generate_data_point()
             print(f"New Data Point: {data_point}")
             time.sleep(interval)
-
-
-
-
-# Example usage of the class
-
-# Create a data stream object
-# stream = RealTimeDataStream(anomaly_prob=0.02, noise_level=0.1)
-
-# # Run the stream and get real-time data points
-# stream.run(interval=1, points=10)

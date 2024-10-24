@@ -1,15 +1,14 @@
-from algorithms import ZScoreAnomalyDetector, OnlineOneClassSVM
+from algorithms import ZScoreAnomalyDetector, OnlineKNNAnomalyDetector
 from data_generation import RealTimeDataStream
 from visualization import RealTimeVisualizer
-from test import OnlineKNNAnomalyDetector
 
-# Create instances of the classes
+# Create instances of the real-time data stream and anomaly detectors
 stream = RealTimeDataStream(anomaly_prob=0.02, noise_level=0.1)
-# detector = ZScoreAnomalyDetector(window_size=30, z_threshold=2.5)
 
-detector = OnlineKNNAnomalyDetector(k=20, window_size=50, threshold=1.5)
+detector1 = ZScoreAnomalyDetector(window_size=50, z_threshold=2.3)
+detector2 = OnlineKNNAnomalyDetector(k=9, window_size=20)
 
-visualizer = RealTimeVisualizer()
 
 # Run the real-time visualization
-visualizer.visualize(stream, detector, interval=10)  # 1-second interval
+visualizer = RealTimeVisualizer()
+visualizer.visualize_multiple(stream, [detector1, detector2], interval=10)  # 10-Milli-Second interval
